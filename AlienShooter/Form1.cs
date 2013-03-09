@@ -26,7 +26,8 @@ namespace AlienShooter
             tank1.mouseY = mouseY;
             Graphics canvas = e.Graphics;
             lv1.Draw(canvas);
-            tank1.draw(canvas);
+            tank1.facing = trackBar2.Value;
+            tank1.draw(canvas, label1,label2,trackBar1.Value);
         }
 
         private void timer1_Tick(object sender, EventArgs e)

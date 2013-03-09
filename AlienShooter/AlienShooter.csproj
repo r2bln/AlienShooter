@@ -59,6 +59,7 @@
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
     <Compile Include="Unit.cs" />
+    <Compile Include="UnitFrames.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,10 +90,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="grass.png" />
+    <None Include="res\grass.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="tank_full.png" />
+    <None Include="res\tank_full.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\zergl-full.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
