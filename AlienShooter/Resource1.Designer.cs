@@ -73,6 +73,16 @@ namespace AlienShooter {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap marine_full {
+            get {
+                object obj = ResourceManager.GetObject("marine_full", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tank_full {
             get {
                 object obj = ResourceManager.GetObject("tank_full", resourceCulture);
