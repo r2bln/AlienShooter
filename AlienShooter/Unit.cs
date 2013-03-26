@@ -16,13 +16,24 @@ namespace AlienShooter
 
         int count;
 
-        public bool up;
-        public bool left;
-        public bool down;
-        public bool right;
+        public bool KeyUp;
+        public bool KeyLeft;
+        public bool KeyDown;
+        public bool KeyRight;
 
         public List<Bitmap> animChain = new List<Bitmap>();
         public UnitFrames frameSource;
+
+
+        const int UP = 0;
+        const int UP_RIGHT = 2;
+        const int RIGHT = 4;
+        const int DOWN_RIGHT = 6;
+        const int DOWN = 8;
+        const int DOWN_LEFT = 16;
+        const int LEFT = 14;
+        const int UP_LEFT = 12;
+        
 
         public Unit(int _posX, int _posY)
         {
@@ -52,42 +63,42 @@ namespace AlienShooter
 
             if (plr.posX > posX && plr.posY > posY)
             {
-                facing = 6;
+                facing = DOWN_RIGHT;
             }
 
             else if (plr.posX < posX && plr.posY < posY)
             {
-                facing = 16;
+                facing = UP_LEFT;
             }
 
             else if (plr.posX > posX && plr.posY < posY)
             {
-                facing = 2;
+                facing = UP_RIGHT;
             }
 
             else if (plr.posX < posX && plr.posY > posY)
             {
-                facing = 12;
+                facing = DOWN_LEFT;
             }
 
             else if (plr.posX > posX)
             {
-                facing = 4;
+                facing = RIGHT;
             }
 
             else if (plr.posX < posX)
             {
-                facing = 14;
+                facing = LEFT;
             }
 
             else if (plr.posY > posY)
             {
-                facing = 8;
+                facing = DOWN;
             }
 
             else if (plr.posY < posY)
             {
-                facing = 0;
+                facing = UP;
             }
 
             if (facing != oldFacing)
@@ -103,32 +114,32 @@ namespace AlienShooter
 
             switch (facing)
             {
-                case 0:
+                case UP:
                     posY -= speed;
                     break;
-                case 4:
+                case RIGHT:
                     posX += speed;
                     break;
-                case 8:
+                case DOWN:
                     posY += speed;
                     break;
-                case 2:
+                case UP_RIGHT:
                     posX += speed;
                     posY -= speed;
                     break;
-                case 6:
+                case DOWN_RIGHT:
                     posX += speed;
                     posY += speed;
                     break;
-                case 16:
+                case DOWN_LEFT:
                     posX -= speed;
                     posY += speed;
                     break;
-                case 12:
+                case UP_LEFT:
                     posX -= speed;
                     posY -= speed;
                     break;
-                case 14:
+                case LEFT:
                     posX -= speed;
                     break;
             }

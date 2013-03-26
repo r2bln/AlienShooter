@@ -16,7 +16,7 @@ namespace AlienShooter
 
         Random rnd1 = new Random();
 
-        Player plr1 = new Player(50,50,1);
+        Player plr1 = new Player(250,250,1);
         
         public Form1()
         {
