@@ -20,13 +20,13 @@ namespace AlienShooter
                 speed = 3;
                 switch (key)
                 {
-                    case Keys.W: up = true;
+                    case Keys.W: KeyUp = true;
                         break;
-                    case Keys.A: left = true;
+                    case Keys.A: KeyLeft = true;
                         break;
-                    case Keys.S: down = true;
+                    case Keys.S: KeyDown = true;
                         break;
-                    case Keys.D: right = true;
+                    case Keys.D: KeyRight = true;
                         break;
                 }
 
@@ -41,13 +41,13 @@ namespace AlienShooter
                 speed = 0;
                 switch (key)
                 {
-                    case Keys.W: up = false;
+                    case Keys.W: KeyUp = false;
                         break;
-                    case Keys.A: left = false;
+                    case Keys.A: KeyLeft = false;
                         break;
-                    case Keys.S: down = false;
+                    case Keys.S: KeyDown = false;
                         break;
-                    case Keys.D: right = false;
+                    case Keys.D: KeyRight = false;
                         break;
                 }
                 if (key == Keys.Space)
@@ -56,14 +56,14 @@ namespace AlienShooter
                 }
             }
 
-            if (up && right) facing = 2;
-            else if (right && down) facing = 6;
-            else if (left && down) facing = 16;
-            else if (up && left) facing = 12;
-            else if (up) facing = 0;
-            else if (right) facing = 4;
-            else if (left) facing = 14;
-            else if (down) facing = 8;
+            if (KeyUp && KeyRight) facing = 2;
+            else if (KeyRight && KeyDown) facing = 6;
+            else if (KeyLeft && KeyDown) facing = 16;
+            else if (KeyUp && KeyLeft) facing = 12;
+            else if (KeyUp) facing = 0;
+            else if (KeyRight) facing = 4;
+            else if (KeyLeft) facing = 14;
+            else if (KeyDown) facing = 8;
 
             animChain = frameSource.GetFrames(facing, frameCount);
         }
