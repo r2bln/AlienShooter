@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
 
 namespace AlienShooter
@@ -9,7 +8,7 @@ namespace AlienShooter
         public int posX;
         public int posY;
         public int frameCount = 16;
-        public int facing = 5; // 0 - N, 1 - NE, 3 - E, and so on
+        public int facing = 5; 
         public int speed = 3;
         public int mouseX;
         public int mouseY;
@@ -25,14 +24,14 @@ namespace AlienShooter
         public UnitFrames frameSource;
 
 
-        const int UP = 0;
-        const int UP_RIGHT = 2;
-        const int RIGHT = 4;
-        const int DOWN_RIGHT = 6;
-        const int DOWN = 8;
-        const int DOWN_LEFT = 16;
-        const int LEFT = 14;
-        const int UP_LEFT = 12;
+        public const int UP = 0;
+        public const int UP_RIGHT = 2;
+        public const int RIGHT = 4;
+        public const int DOWN_RIGHT = 6;
+        public const int DOWN = 8;
+        public const int DOWN_LEFT = 16;
+        public const int LEFT = 14;
+        public const int UP_LEFT = 12;
         
 
         public Unit(int _posX, int _posY)
@@ -107,6 +106,11 @@ namespace AlienShooter
             }
         }
 
+        public void Die()
+        {
+            
+        }
+
         public void draw(Graphics canvas)
         {
             //----------------------------------------------------------
@@ -144,8 +148,8 @@ namespace AlienShooter
                     break;
             }
 
-            if (posX > 600) posX = 640;
-            if (posY > 500) posY = 512;
+            if (posX > 640 - 64) posX = 640 - 64;
+            if (posY > 512 - 64) posY = 512 - 64;
             if (posX < 0) posX = 0;
             if (posY < 0) posY = 0;
             //--------------------------------------------------------------
