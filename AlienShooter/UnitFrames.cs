@@ -27,6 +27,24 @@ namespace AlienShooter
             step = rect.Width * 2 * 9;
         }
         
+        public List<Bitmap> DumpAllFrames()
+        {
+            loc.X = 32;
+            while (loc.Y < sprites.Height) 
+            {
+                tmpFrame = sprites.Clone(rect, sprites.PixelFormat);
+                animChain.Add(tmpFrame);
+                loc.X += rect.Width * 2;
+                if (loc.X > sprites.Width)
+                {
+                    loc.X = 32;
+                    loc.Y += rect.Height * 2;
+                }
+                rect.Location = loc;
+            }
+            return animChain;
+        }
+
         public List<Bitmap> GetFrames(int animId, int _frameCount)
         {
             if (animId > 10)
