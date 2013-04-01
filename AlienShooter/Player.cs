@@ -13,7 +13,7 @@ namespace AlienShooter
             animChain = frameSource.GetFrames(facing, frameCount);
         }
 
-        public void processKeys(int eventType, Keys key) // 0 - keyDown 1 - keyUp
+        public void ProcessKeys(int eventType, Keys key) // 0 - keyDown 1 - keyUp
         {
             if (eventType == 0)
             {
@@ -38,7 +38,6 @@ namespace AlienShooter
             }
             if (eventType == 1)
             {
-                speed = 0;
                 switch (key)
                 {
                     case Keys.W: KeyUp = false;
@@ -52,18 +51,20 @@ namespace AlienShooter
                 }
                 if (key == Keys.Space)
                 {
-                    speed = 0;
+                    speed = 3;
                 }
+                if (!KeyUp && !KeyDown && !KeyLeft && !KeyRight)
+                    speed = 0;      
             }
 
-            if (KeyUp && KeyRight) facing = 2;
-            else if (KeyRight && KeyDown) facing = 6;
-            else if (KeyLeft && KeyDown) facing = 16;
-            else if (KeyUp && KeyLeft) facing = 12;
-            else if (KeyUp) facing = 0;
-            else if (KeyRight) facing = 4;
-            else if (KeyLeft) facing = 14;
-            else if (KeyDown) facing = 8;
+            if (KeyUp && KeyRight) facing = UP_RIGHT;
+            else if (KeyRight && KeyDown) facing = DOWN_RIGHT;
+            else if (KeyLeft && KeyDown) facing = DOWN_LEFT;
+            else if (KeyUp && KeyLeft) facing = UP_LEFT;
+            else if (KeyUp) facing = UP;
+            else if (KeyRight) facing = RIGHT;
+            else if (KeyLeft) facing = LEFT;
+            else if (KeyDown) facing = DOWN;
 
             animChain = frameSource.GetFrames(facing, frameCount);
         }
