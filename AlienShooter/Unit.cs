@@ -7,7 +7,7 @@ namespace AlienShooter
     {
         public int posX;
         public int posY;
-        public int frameCount = 16;
+        public int frameCount = 10;
         public int facing = 5; 
         public int speed = 3;
         public int mouseX;
@@ -21,8 +21,7 @@ namespace AlienShooter
         public bool KeyRight;
 
         public List<Bitmap> animChain = new List<Bitmap>();
-        public UnitFrames frameSource;
-
+        public UnitFrames frameSource = new UnitFrames(Resource1.zergl_full);
 
         public const int UP = 0;
         public const int UP_RIGHT = 2;
@@ -38,17 +37,17 @@ namespace AlienShooter
         {
             posX = _posX;
             posY = _posY;
-            frameSource = new UnitFrames(Resource1.zergl_full);
-            animChain = frameSource.GetFrames(facing, frameCount);
+            frameSource.DumpAllFrames();
+            animChain = frameSource.GetAnim(facing);
         }
 
         public Unit(int _posX, int _posY, int _facing)
         {
             posX = _posX;
             posY = _posY;
-            frameSource = new UnitFrames(Resource1.zergl_full);
-            animChain = frameSource.GetFrames(_facing, frameCount);
+            frameSource.DumpAllFrames();
             facing = _facing;
+            animChain = frameSource.GetAnim(facing);
         }
         
         public Unit() 
@@ -102,7 +101,7 @@ namespace AlienShooter
 
             if (facing != oldFacing)
             {
-                animChain = frameSource.GetFrames(facing, frameCount);
+                animChain = frameSource.GetAnim(facing);
             }
         }
 
@@ -111,11 +110,13 @@ namespace AlienShooter
             
         }
 
+        /// <summary>
+        /// Movement and draw routines
+        /// </summary>
+        /// <param name="canvas">>GDI+ Graphics Object</param>
+
         public void draw(Graphics canvas)
         {
-            //----------------------------------------------------------
-            //------------------MOVEMENT-------------------------------
-
             switch (facing)
             {
                 case UP:
@@ -152,9 +153,6 @@ namespace AlienShooter
             if (posY > 512 - 64) posY = 512 - 64;
             if (posX < 0) posX = 0;
             if (posY < 0) posY = 0;
-            //--------------------------------------------------------------
-
-            //GetFacing();
 
             canvas.DrawImage(animChain[count], posX, posY);
             count++;

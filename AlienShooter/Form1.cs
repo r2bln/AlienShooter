@@ -16,7 +16,7 @@ namespace AlienShooter
 
         Random rnd1 = new Random();
 
-        Player plr1 = new Player(250,250,1);
+        Player plr1 = new Player(250,250,2);
         
         public Form1()
         {
@@ -37,7 +37,7 @@ namespace AlienShooter
             plr1.draw(canvas);
             foreach (Unit unit in enemies)
             {
-                unit.GetFacing(plr1);
+                //unit.GetFacing(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
                 unit.draw(canvas);

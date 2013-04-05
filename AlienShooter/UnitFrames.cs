@@ -7,91 +7,83 @@ namespace AlienShooter
     {
         Point loc;
         Rectangle rect;
-        Bitmap sprites;
+        Bitmap SpriteSheet;
+        private Bitmap tmp;
         List<Bitmap> animChain = new List<Bitmap>();
+        List<Bitmap> retAnimChain = new List<Bitmap>();
         private Bitmap tmpFrame; 
-        private int step;
         public int facing = 14;
-        private int prev = 0;
         public int frameCount = 0;
-        private bool flipped;
 
-        public UnitFrames(Bitmap spriteSrc)
+        public UnitFrames(Bitmap spriteSheetSrc)
         {
-            sprites = new Bitmap(spriteSrc);
+            SpriteSheet = spriteSheetSrc;
             rect.Width = 64;
             rect.Height = 64;
             loc.X = 32;
             loc.Y = 32;
             rect.Location = loc;
-            step = rect.Width * 2 * 9;
         }
         
-        public List<Bitmap> DumpAllFrames()
+
+        /// <summary>
+        /// Dumps all frames of a spritesheet into a collection of Bitmaps
+        /// </summary>
+        /// <returns>none</returns>
+
+        public void DumpAllFrames()
         {
+            SpriteSheet = new Bitmap(SpriteSheet);
             loc.X = 32;
-            while (loc.Y < sprites.Height) 
+            while (loc.Y < SpriteSheet.Height) 
             {
-                tmpFrame = sprites.Clone(rect, sprites.PixelFormat);
+                tmpFrame = SpriteSheet.Clone(rect, SpriteSheet.PixelFormat);
                 animChain.Add(tmpFrame);
                 loc.X += rect.Width * 2;
-                if (loc.X > sprites.Width)
+                if (loc.X > SpriteSheet.Width)
                 {
                     loc.X = 32;
                     loc.Y += rect.Height * 2;
                 }
                 rect.Location = loc;
             }
-            return animChain;
         }
 
-        public List<Bitmap> GetFrames(int animId, int _frameCount)
+        /// <summary>
+        /// Returns the sequence of frames of -th animation on the spritesheet
+        /// </summary>
+        /// <param name="animId">Animation number</param>
+        /// <returns>List<Bitmap></returns>
+
+        public List<Bitmap> GetAnim(int facing)
         {
+            int animId = facing;
             if (animId > 10)
             {
-                animId -= 10;
-                flipped = true;
+               animId -= 10; 
             }
-            
-            loc.X = 32 + 64 * 2 * animId;
-            rect.Location = loc;
-            animChain.Clear();
-            while (loc.Y < sprites.Height - rect.Width * 2) // Достает все анимации while (frameCount <= _frameCount + 1) //
-            {
-                tmpFrame = sprites.Clone(rect, sprites.PixelFormat);
-                animChain.Add(tmpFrame);
-                prev = loc.X;
-                loc.X += step;
-                frameCount++;
+                
+            retAnimChain.Clear();
 
-                if (loc.X > sprites.Width)
-                {
-                    loc.X = loc.X - (step + rect.Width*21 + 32*2);
-                    prev = 0;
-                    loc.Y += rect.Height*2;
-                }
-                if (loc.X > 0)
-                {
-                    rect.Location = loc;
-                    frameCount++;
-                }
-            }
-            frameCount = 0;
-            loc.Y = 32;
-
-            if (flipped)
+            for (int i = animId; i < animChain.Count; i+=9)
             {
-                foreach (Bitmap bitmap in animChain)
+                tmp = animChain[i];
+
+                if (facing > 10)
                 {
-                    bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    tmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
                 }
-                flipped = false;
+
+                retAnimChain.Add(tmp);
             }
-            return animChain;
+            return retAnimChain;
         }
 
         /* Test purposes only! */
-
+        /// <summary>
+        /// Draws all previously dumped frames on the level.
+        /// </summary>
+        /// <param name="canvas">GDI+ Graphics Object</param>
         public void draw(Graphics canvas)
         {
             Point loc1 = new Point(0,100);
