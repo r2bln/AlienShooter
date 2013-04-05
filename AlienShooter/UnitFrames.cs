@@ -8,12 +8,7 @@ namespace AlienShooter
         Point loc;
         Rectangle rect;
         Bitmap SpriteSheet;
-        private Bitmap tmp;
-        List<Bitmap> animChain = new List<Bitmap>();
-        List<Bitmap> retAnimChain = new List<Bitmap>();
-        private Bitmap tmpFrame; 
-        public int facing = 14;
-        public int frameCount = 0;
+        readonly List<Bitmap> animDump = new List<Bitmap>();
 
         public UnitFrames(Bitmap spriteSheetSrc)
         {
@@ -37,8 +32,8 @@ namespace AlienShooter
             loc.X = 32;
             while (loc.Y < SpriteSheet.Height) 
             {
-                tmpFrame = SpriteSheet.Clone(rect, SpriteSheet.PixelFormat);
-                animChain.Add(tmpFrame);
+                Bitmap tmpFrame = SpriteSheet.Clone(rect, SpriteSheet.PixelFormat);
+                animDump.Add(tmpFrame);
                 loc.X += rect.Width * 2;
                 if (loc.X > SpriteSheet.Width)
                 {
@@ -58,23 +53,23 @@ namespace AlienShooter
         public List<Bitmap> GetAnim(int facing)
         {
             int animId = facing;
+            var retAnimChain = new List<Bitmap>();
+
             if (animId > 10)
             {
                animId -= 10; 
             }
-                
-            retAnimChain.Clear();
 
-            for (int i = animId; i < animChain.Count; i+=9)
+            for (int i = animId; i < animDump.Count; i+=9)
             {
-                tmp = animChain[i];
+                Bitmap tmpFrame = animDump[i];
 
                 if (facing > 10)
                 {
-                    tmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    tmpFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
                 }
 
-                retAnimChain.Add(tmp);
+                retAnimChain.Add(tmpFrame);
             }
             return retAnimChain;
         }
@@ -84,10 +79,10 @@ namespace AlienShooter
         /// Draws all previously dumped frames on the level.
         /// </summary>
         /// <param name="canvas">GDI+ Graphics Object</param>
-        public void draw(Graphics canvas)
+        public void Draw(Graphics canvas)
         {
             Point loc1 = new Point(0,100);
-            foreach (Bitmap frame in animChain)
+            foreach (Bitmap frame in animDump)
             {
                 canvas.DrawImage(frame, loc1);
                 loc1.X += frame.Width;
