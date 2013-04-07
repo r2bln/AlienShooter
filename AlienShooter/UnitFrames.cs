@@ -71,6 +71,16 @@
             return retAnimChain;
         }
 
+        public List<Bitmap> GetAnim(int start, int count)
+        {
+            var retAnimChain = new List<Bitmap>();
+            for (var i = start; i < count; i++)
+            {
+                retAnimChain.Add(animDump[i]);
+            }
+            return retAnimChain;
+        }
+
         /* Test purposes only! */
         /// <summary>
         /// Draws all previously dumped frames on the level.

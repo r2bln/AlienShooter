@@ -14,6 +14,7 @@ namespace AlienShooter
         public int mouseY;
 
         int count;
+        public bool dead = false;
 
         public bool KeyUp;
         public bool KeyLeft;
@@ -21,6 +22,7 @@ namespace AlienShooter
         public bool KeyRight;
 
         public List<Bitmap> animChain = new List<Bitmap>();
+        public List<Bitmap> deathChain = new List<Bitmap>(); 
         public UnitFrames frameSource = new UnitFrames(Resource1.zergl_full);
 
         public const int UP = 0;
@@ -48,6 +50,7 @@ namespace AlienShooter
             frameSource.DumpAllFrames();
             facing = _facing;
             animChain = frameSource.GetAnim(facing);
+            deathChain = frameSource.GetAnim(113, 120);
         }
         
         public void GetFacing(Player plr)
@@ -96,9 +99,11 @@ namespace AlienShooter
             }
         }
 
-        public void Die()
+        public void Die(Graphics canvas)
         {
-            
+            canvas.DrawImage(deathChain[count], posX, posY);
+            count++;
+            if (count > deathChain.Count - 1) count = 0;
         }
 
         /// <summary>
@@ -144,9 +149,21 @@ namespace AlienShooter
             if (posX < 0) posX = 0;
             if (posY < 0) posY = 0;
 
-            canvas.DrawImage(animChain[count], posX, posY);
-            count++;
-            if (count > frameCount) count = 0;
+            if (!dead)
+            {
+                canvas.DrawImage(animChain[count], posX, posY);
+                canvas.DrawRectangle(new Pen(Color.Red),  posX,posY,64,64);
+                count++;
+                if (count > frameCount) count = 0;
+            }
+            else
+            {
+                if (count > 6) count = 0;
+                canvas.DrawImage(deathChain[count], posX, posY);
+                count++;
+                
+            }
+            
         }
     }
 }

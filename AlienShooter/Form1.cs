@@ -37,10 +37,14 @@ namespace AlienShooter
             plr1.Draw(canvas);
             foreach (Unit unit in enemies)
             {
-                //unit.GetFacing(plr1);
+                unit.GetFacing(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
-                unit.Draw(canvas);
+                if (unit.posX == plr1.posX && unit.posY == plr1.posY)
+                {
+                    unit.dead = true;
+                }
+                unit.Draw(canvas);                  
             }
             
         }
