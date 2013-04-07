@@ -34,13 +34,13 @@ namespace AlienShooter
 
             Graphics canvas = e.Graphics;
             lv1.Draw(canvas);
-            plr1.draw(canvas);
+            plr1.Draw(canvas);
             foreach (Unit unit in enemies)
             {
                 //unit.GetFacing(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
-                unit.draw(canvas);
+                unit.Draw(canvas);
             }
             
         }
@@ -52,12 +52,12 @@ namespace AlienShooter
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            plr1.ProcessKeys(0, e.KeyData);
+            plr1.ProcessKeys(true, e.KeyData);
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            plr1.ProcessKeys(1, e.KeyData);
+            plr1.ProcessKeys(false, e.KeyData);
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)

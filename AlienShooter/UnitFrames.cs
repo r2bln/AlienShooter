@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-
-namespace AlienShooter
+﻿namespace AlienShooter
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+
     public class UnitFrames
     {
         Point loc;
@@ -19,18 +19,16 @@ namespace AlienShooter
             loc.Y = 32;
             rect.Location = loc;
         }
-        
+
 
         /// <summary>
         /// Dumps all frames of a spritesheet into a collection of Bitmaps
         /// </summary>
-        /// <returns>none</returns>
-
         public void DumpAllFrames()
         {
             SpriteSheet = new Bitmap(SpriteSheet);
             loc.X = 32;
-            while (loc.Y < SpriteSheet.Height) 
+            while (loc.Y < SpriteSheet.Height)
             {
                 Bitmap tmpFrame = SpriteSheet.Clone(rect, SpriteSheet.PixelFormat);
                 animDump.Add(tmpFrame);
@@ -49,7 +47,6 @@ namespace AlienShooter
         /// </summary>
         /// <param name="animId">Animation number</param>
         /// <returns>List<Bitmap></returns>
-
         public List<Bitmap> GetAnim(int facing)
         {
             int animId = facing;
@@ -57,12 +54,12 @@ namespace AlienShooter
 
             if (animId > 10)
             {
-               animId -= 10; 
+                animId -= 10;
             }
 
-            for (int i = animId; i < animDump.Count; i+=9)
+            for (var i = animId; i < animDump.Count; i += 9)
             {
-                Bitmap tmpFrame = animDump[i];
+                var tmpFrame = new Bitmap(animDump[i]);
 
                 if (facing > 10)
                 {
@@ -81,7 +78,7 @@ namespace AlienShooter
         /// <param name="canvas">GDI+ Graphics Object</param>
         public void Draw(Graphics canvas)
         {
-            Point loc1 = new Point(0,100);
+            Point loc1 = new Point(0, 100);
             foreach (Bitmap frame in animDump)
             {
                 canvas.DrawImage(frame, loc1);

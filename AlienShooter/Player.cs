@@ -5,6 +5,7 @@ namespace AlienShooter
     internal class Player : Unit
     {
         public Player(int _posX, int _posY, int _frameCount)
+            : base(_posX, _posY)
         {
             posX = _posX;
             posY = _posY;
@@ -14,56 +15,33 @@ namespace AlienShooter
             animChain = frameSource.GetAnim(facing);
         }
 
-        public void ProcessKeys(int eventType, Keys key) // 0 - keyDown 1 - keyUp
+        public void ProcessKeys(bool eventType, Keys key) // true - keyDown, false - keyUp
         {
-            if (eventType == 0)
+            speed = 3;
+            switch (key)
             {
-                speed = 3;
-                switch (key)
-                {
-                    case Keys.W:
-                        KeyUp = true;
-                        break;
-                    case Keys.A:
-                        KeyLeft = true;
-                        break;
-                    case Keys.S:
-                        KeyDown = true;
-                        break;
-                    case Keys.D:
-                        KeyRight = true;
-                        break;
-                }
-
-                if (key == Keys.Space)
-                {
-                    speed = 5;
-                }
-
+                case Keys.W:
+                    KeyUp = eventType;
+                    break;
+                case Keys.A:
+                    KeyLeft = eventType;
+                    break;
+                case Keys.S:
+                    KeyDown = eventType;
+                    break;
+                case Keys.D:
+                    KeyRight = eventType;
+                    break;
             }
-            if (eventType == 1)
+
+            if (key == Keys.Space)
             {
-                switch (key)
-                {
-                    case Keys.W:
-                        KeyUp = false;
-                        break;
-                    case Keys.A:
-                        KeyLeft = false;
-                        break;
-                    case Keys.S:
-                        KeyDown = false;
-                        break;
-                    case Keys.D:
-                        KeyRight = false;
-                        break;
-                }
-                if (key == Keys.Space)
-                {
-                    speed = 3;
-                }
-                if (!KeyUp && !KeyDown && !KeyLeft && !KeyRight)
-                    speed = 0;
+                speed = 5;
+            }
+
+            if (!KeyUp && !KeyDown && !KeyLeft && !KeyRight)
+            {
+                speed = 0;
             }
 
             if (KeyUp && KeyRight) facing = UP_RIGHT;

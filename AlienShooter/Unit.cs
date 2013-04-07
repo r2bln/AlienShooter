@@ -50,11 +50,6 @@ namespace AlienShooter
             animChain = frameSource.GetAnim(facing);
         }
         
-        public Unit() 
-        {
-            // Это использовать нельзя иначе пиздец
-        }
-
         public void GetFacing(Player plr)
         {
             int oldFacing = facing;
@@ -63,22 +58,18 @@ namespace AlienShooter
             {
                 facing = DOWN_RIGHT;
             }
-
             else if (plr.posX < posX && plr.posY < posY)
             {
                 facing = UP_LEFT;
             }
-
             else if (plr.posX > posX && plr.posY < posY)
             {
                 facing = UP_RIGHT;
             }
-
             else if (plr.posX < posX && plr.posY > posY)
             {
                 facing = DOWN_LEFT;
             }
-
             else if (plr.posX > posX)
             {
                 facing = RIGHT;
@@ -114,8 +105,7 @@ namespace AlienShooter
         /// Movement and draw routines
         /// </summary>
         /// <param name="canvas">>GDI+ Graphics Object</param>
-
-        public void draw(Graphics canvas)
+        public void Draw(Graphics canvas)
         {
             switch (facing)
             {
