@@ -34,18 +34,24 @@ namespace AlienShooter
 
             Graphics canvas = e.Graphics;
             lv1.Draw(canvas);
-            plr1.Draw(canvas);
+            
             foreach (Unit unit in enemies)
             {
-                unit.GetFacing(plr1);
+                //unit.GetFacing(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
-                if (unit.posX == plr1.posX && unit.posY == plr1.posY)
+                unit.Draw(canvas);
+
+                collisionDetector(plr1, unit);
+                
+                if (unit.dead && unit.count == unit.deathChain.Count - 1)
                 {
-                    unit.dead = true;
-                }
-                unit.Draw(canvas);                  
+                    enemies.Remove(unit);
+                    // Это костыль.
+                    break;                    
+                }      
             }
+            plr1.Draw(canvas);
             
         }
 
@@ -68,6 +74,42 @@ namespace AlienShooter
         {
             mouseX = e.X;
             mouseY = e.Y;
+        }
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        {
+            foreach (Unit unit in enemies)
+            {
+                selectionCheck(e, unit);
+            }
+        }
+
+        private void selectionCheck(MouseEventArgs e, Unit unit)
+        {
+            int mouseX = e.X;
+            int mouseY = e.Y;
+            const int unitCenterOffset = 32;
+            int innerRadius = unitCenterOffset - unitCenterOffset / 5;
+
+            if (Math.Pow(mouseX - unit.posX - unitCenterOffset, 2) + Math.Pow(mouseY - unit.posY - unitCenterOffset, 2) < innerRadius * innerRadius)
+            {
+                unit.dead = true;
+                unit.count = 0;
+            }
+        }
+
+        private void collisionDetector(Player plr1, Unit unit)
+        {
+            int x = plr1.posX + 32;
+            int y = plr1.posY + 32;
+            const int unitCenterOffset = 32;
+            int innerRadius = unitCenterOffset - unitCenterOffset / 5;
+
+            if (Math.Pow(x - unit.posX - unitCenterOffset, 2) + Math.Pow(y - unit.posY - unitCenterOffset, 2) < innerRadius * innerRadius)
+            {
+                unit.dead = true;
+                unit.count = 0;
+            }
         }
     }
 }
