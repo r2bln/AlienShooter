@@ -11,12 +11,14 @@ namespace AlienShooter
         public int posY;
         public int frameCount = 10;
         public int facing = 5;
+        public int turretFacing = 0;
         public int speed = 3;
         public int mouseX;
         public int mouseY;
 
+        private int centerOffset = 32;
+
         public int count;
-        public bool dead = false;
 
         public bool KeyUp;
         public bool KeyLeft;
@@ -88,19 +90,19 @@ namespace AlienShooter
             animChain = frameSource.GetAnim(facing);
         }
 
-        public void DrawTurret(Graphics canvas, int facing)
+        public void DrawTurret(Graphics canvas, int _facing)
         {
-            if (facing > 10)
+            if (_facing > 10)
             {
-                facing -= 10;
-                var tmpFrame = new Bitmap(turretAnim[facing]);
+                _facing -= 10;
+                var tmpFrame = new Bitmap(turretAnim[_facing]);
                 tmpFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
                 canvas.DrawImage(tmpFrame,posX,posY);
-                facing += 10;
+                _facing += 10;
             }
             else
             {
-                canvas.DrawImage(turretAnim[facing], posX, posY);
+                canvas.DrawImage(turretAnim[_facing], posX, posY);
             }
         }
 
@@ -149,9 +151,48 @@ namespace AlienShooter
 
             canvas.DrawRectangle(new Pen(Color.Red), posX, posY, 64, 64);
             canvas.DrawImage(animChain[count], posX, posY);
-            DrawTurret(canvas, facing);
+            DrawTurret(canvas, turretFacing);
             count++;
             if (count > frameCount) count = 0;
+        }
+
+        public void GetTurretFacing(MouseEventArgs e)
+        {
+            if (e.X > posX + centerOffset && e.Y > posY + centerOffset)
+            {
+                turretFacing = DOWN_RIGHT;
+            }
+            else if (e.X < posX + centerOffset && e.Y < posY + centerOffset)
+            {
+                turretFacing = UP_LEFT;
+            }
+            else if (e.X > posX + centerOffset && e.Y < posY + centerOffset)
+            {
+                turretFacing = UP_RIGHT;
+            }
+            else if (e.X < posX + centerOffset && e.Y > posY + centerOffset)
+            {
+                turretFacing = DOWN_LEFT;
+            }
+            else if (e.X + centerOffset > posX + centerOffset)
+            {
+                turretFacing = RIGHT;
+            }
+
+            else if (e.X + centerOffset < posX + centerOffset)
+            {
+                turretFacing = LEFT;
+            }
+
+            else if (e.Y + centerOffset > posY + centerOffset)
+            {
+                turretFacing = DOWN;
+            }
+
+            else if (e.Y + centerOffset < posY + centerOffset) 
+            {
+                turretFacing = UP;
+            }
         }
     }
 }

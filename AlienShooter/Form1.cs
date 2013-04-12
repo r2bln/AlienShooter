@@ -74,6 +74,8 @@ namespace AlienShooter
         {
             mouseX = e.X;
             mouseY = e.Y;
+            plr1.GetTurretFacing(e);
+
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -111,5 +113,7 @@ namespace AlienShooter
                 unit.count = 0;
             }
         }
+
+        
     }
 }
