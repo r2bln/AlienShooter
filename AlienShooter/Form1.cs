@@ -75,6 +75,7 @@ namespace AlienShooter
             mouseX = e.X;
             mouseY = e.Y;
             plr1.GetTurretFacing(e);
+            label1.Text = plr1.mouseAngle.ToString();
 
         }
 

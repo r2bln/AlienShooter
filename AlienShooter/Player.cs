@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -15,6 +16,8 @@ namespace AlienShooter
         public int speed = 3;
         public int mouseX;
         public int mouseY;
+
+        public double mouseAngle = 0;
 
         private int centerOffset = 32;
 
@@ -158,41 +161,48 @@ namespace AlienShooter
 
         public void GetTurretFacing(MouseEventArgs e)
         {
-            if (e.X > posX + centerOffset && e.Y > posY + centerOffset)
-            {
-                turretFacing = DOWN_RIGHT;
-            }
-            else if (e.X < posX + centerOffset && e.Y < posY + centerOffset)
-            {
-                turretFacing = UP_LEFT;
-            }
-            else if (e.X > posX + centerOffset && e.Y < posY + centerOffset)
-            {
-                turretFacing = UP_RIGHT;
-            }
-            else if (e.X < posX + centerOffset && e.Y > posY + centerOffset)
-            {
-                turretFacing = DOWN_LEFT;
-            }
-            else if (e.X + centerOffset > posX + centerOffset)
-            {
-                turretFacing = RIGHT;
-            }
+            double dX = e.X - (posX + centerOffset);
+            double dY = e.Y - (posY + centerOffset);
 
-            else if (e.X + centerOffset < posX + centerOffset)
-            {
-                turretFacing = LEFT;
-            }
+            if (dY < 0 && dX > 0)
+                mouseAngle = Math.Asin(dX/Math.Sqrt(dX*dX + dY*dY)) / Math.PI * 180;
+            else if (dY < 0 && dX < 0)
+                mouseAngle = Math.Asin(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180 + 360;
+            else if (dY > 0)
+                mouseAngle = Math.Acos(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180 + 90;
 
-            else if (e.Y + centerOffset > posY + centerOffset)
-            {
-                turretFacing = DOWN;
-            }
-
-            else if (e.Y + centerOffset < posY + centerOffset) 
-            {
-                turretFacing = UP;
-            }
+            if (mouseAngle > 359 && mouseAngle < 1)
+                turretFacing = 0;
+            if (mouseAngle > 1 && mouseAngle < 44)
+                turretFacing = 1;
+            if (mouseAngle > 44 && mouseAngle < 46)
+                turretFacing = 2;
+            if (mouseAngle > 46 && mouseAngle < 89)
+                turretFacing = 3;
+            if (mouseAngle > 89 && mouseAngle < 91)
+                turretFacing = 4;
+            if (mouseAngle > 91 && mouseAngle < 134)
+                turretFacing = 5;
+            if (mouseAngle > 134 && mouseAngle < 136)
+                turretFacing = 6;
+            if (mouseAngle > 136 && mouseAngle < 179)
+                turretFacing = 7;
+            if (mouseAngle > 179 && mouseAngle < 181)
+                turretFacing = 8;
+            if (mouseAngle > 181 && mouseAngle < 224)
+                turretFacing = 17;
+            if (mouseAngle > 224 && mouseAngle < 226)
+                turretFacing = 16;
+            if (mouseAngle > 226 && mouseAngle < 269)
+                turretFacing = 15;
+            if (mouseAngle > 269 && mouseAngle < 271)
+                turretFacing = 14;
+            if (mouseAngle > 271 && mouseAngle < 314)
+                turretFacing = 13;
+            if (mouseAngle > 314 && mouseAngle < 316)
+                turretFacing = 12;
+            if (mouseAngle > 316 && mouseAngle < 359)
+                turretFacing = 11;
         }
     }
 }
