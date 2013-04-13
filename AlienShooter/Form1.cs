@@ -75,7 +75,7 @@ namespace AlienShooter
             mouseX = e.X;
             mouseY = e.Y;
             plr1.GetTurretFacing(e);
-            label1.Text = plr1.mouseAngle.ToString();
+            label1.Text = plr1.MouseAngle.ToString();
 
         }
 
@@ -103,8 +103,8 @@ namespace AlienShooter
 
         private void collisionDetector(Player plr1, Unit unit)
         {
-            int x = plr1.posX + 32;
-            int y = plr1.posY + 32;
+            int x = plr1.PosX + 32;
+            int y = plr1.PosY + 32;
             const int unitCenterOffset = 32;
             int innerRadius = unitCenterOffset - unitCenterOffset / 5;
 

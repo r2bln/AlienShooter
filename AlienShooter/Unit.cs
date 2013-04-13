@@ -57,38 +57,38 @@ namespace AlienShooter
         {
             int oldFacing = facing;
 
-            if (plr.posX > posX && plr.posY > posY)
+            if (plr.PosX > posX && plr.PosY > posY)
             {
                 facing = DOWN_RIGHT;
             }
-            else if (plr.posX < posX && plr.posY < posY)
+            else if (plr.PosX < posX && plr.PosY < posY)
             {
                 facing = UP_LEFT;
             }
-            else if (plr.posX > posX && plr.posY < posY)
+            else if (plr.PosX > posX && plr.PosY < posY)
             {
                 facing = UP_RIGHT;
             }
-            else if (plr.posX < posX && plr.posY > posY)
+            else if (plr.PosX < posX && plr.PosY > posY)
             {
                 facing = DOWN_LEFT;
             }
-            else if (plr.posX > posX)
+            else if (plr.PosX > posX)
             {
                 facing = RIGHT;
             }
 
-            else if (plr.posX < posX)
+            else if (plr.PosX < posX)
             {
                 facing = LEFT;
             }
 
-            else if (plr.posY > posY)
+            else if (plr.PosY > posY)
             {
                 facing = DOWN;
             }
 
-            else if (plr.posY < posY)
+            else if (plr.PosY < posY)
             {
                 facing = UP;
             }

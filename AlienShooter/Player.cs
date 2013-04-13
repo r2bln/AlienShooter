@@ -1,56 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace AlienShooter
+﻿namespace AlienShooter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     internal class Player
     {
-        
-        public int posX;
-        public int posY;
-        public int frameCount = 10;
-        public int facing = 5;
-        public int turretFacing = 0;
-        public int speed = 3;
-        public int mouseX;
-        public int mouseY;
+        private const int Up = 0;
+        private const int UpRight = 2;
+        private const int Right = 4;
+        private const int DownRight = 6;
+        private const int Down = 8;
+        private const int DownLeft = 16;
+        private const int Left = 14;
+        private const int UpLeft = 12;
+        private const int CenterOffset = 32;
 
-        public double mouseAngle = 0;
+        private readonly int frameCount = 10;
+        private readonly UnitFrames frameSource = new UnitFrames(Resource1.zergl_full);
+        private readonly List<Bitmap> turretAnim;
 
-        private int centerOffset = 32;
+        private bool keyUp;
+        private bool keyLeft;
+        private bool keyDown;
+        private bool keyRight;
 
-        public int count;
+        private int facing = 5;
+        private int turretFacing;
+        private int speed = 3;
+        private int count;
 
-        public bool KeyUp;
-        public bool KeyLeft;
-        public bool KeyDown;
-        public bool KeyRight;
+        private List<Bitmap> animChain = new List<Bitmap>();
 
-        public List<Bitmap> animChain = new List<Bitmap>();
-        public UnitFrames frameSource = new UnitFrames(Resource1.zergl_full);
-        private List<Bitmap> turretAnim;
-
-        public const int UP = 0;
-        public const int UP_RIGHT = 2;
-        public const int RIGHT = 4;
-        public const int DOWN_RIGHT = 6;
-        public const int DOWN = 8;
-        public const int DOWN_LEFT = 16;
-        public const int LEFT = 14;
-        public const int UP_LEFT = 12;
-
-        public Player(int _posX, int _posY, int _frameCount)
+        public Player(int posX, int posY, int frameCount)
         {
-            posX = _posX;
-            posY = _posY;
-            frameCount = _frameCount;
-            frameSource = new UnitFrames(Resource1.tank_full);
-            frameSource.DumpAllFrames();
-            animChain = frameSource.GetAnim(facing);
-            turretAnim = frameSource.GetAnim(27, 36);
+            this.PosX = posX;
+            this.PosY = posY;
+            this.frameCount = frameCount;
+            this.frameSource = new UnitFrames(Resource1.tank_full);
+            this.frameSource.DumpAllFrames();
+            this.animChain = this.frameSource.GetAnim(facing);
+            turretAnim = this.frameSource.GetAnim(27, 36);
         }
+
+        public int PosX { get; set; }
+
+        public int PosY { get; set; }
+
+        public double MouseAngle { get; set; }
 
         public void ProcessKeys(bool eventType, Keys key) // true - keyDown, false - keyUp
         {
@@ -58,16 +56,16 @@ namespace AlienShooter
             switch (key)
             {
                 case Keys.W:
-                    KeyUp = eventType;
+                    this.keyUp = eventType;
                     break;
                 case Keys.A:
-                    KeyLeft = eventType;
+                    this.keyLeft = eventType;
                     break;
                 case Keys.S:
-                    KeyDown = eventType;
+                    this.keyDown = eventType;
                     break;
                 case Keys.D:
-                    KeyRight = eventType;
+                    this.keyRight = eventType;
                     break;
             }
 
@@ -76,36 +74,35 @@ namespace AlienShooter
                 speed = 5;
             }
 
-            if (!KeyUp && !KeyDown && !KeyLeft && !KeyRight)
+            if (!this.keyUp && !this.keyDown && !this.keyLeft && !this.keyRight)
             {
                 speed = 0;
             }
 
-            if (KeyUp && KeyRight) facing = UP_RIGHT;
-            else if (KeyRight && KeyDown) facing = DOWN_RIGHT;
-            else if (KeyLeft && KeyDown) facing = DOWN_LEFT;
-            else if (KeyUp && KeyLeft) facing = UP_LEFT;
-            else if (KeyUp) facing = UP;
-            else if (KeyRight) facing = RIGHT;
-            else if (KeyLeft) facing = LEFT;
-            else if (KeyDown) facing = DOWN;
+            if (this.keyUp && this.keyRight) facing = UpRight;
+            else if (this.keyRight && this.keyDown) facing = DownRight;
+            else if (this.keyLeft && this.keyDown) facing = DownLeft;
+            else if (this.keyUp && this.keyLeft) facing = UpLeft;
+            else if (this.keyUp) facing = Up;
+            else if (this.keyRight) facing = Right;
+            else if (this.keyLeft) facing = Left;
+            else if (this.keyDown) facing = Down;
 
-            animChain = frameSource.GetAnim(facing);
+            this.animChain = this.frameSource.GetAnim(facing);
         }
 
-        public void DrawTurret(Graphics canvas, int _facing)
+        public void DrawTurret(Graphics canvas)
         {
-            if (_facing > 10)
+            if (turretFacing > 8)
             {
-                _facing -= 10;
-                var tmpFrame = new Bitmap(turretAnim[_facing]);
+                var facing = Math.Abs(turretFacing - 16);
+                var tmpFrame = new Bitmap(turretAnim[facing]);
                 tmpFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                canvas.DrawImage(tmpFrame,posX,posY);
-                _facing += 10;
+                canvas.DrawImage(tmpFrame, this.PosX, this.PosY);
             }
             else
             {
-                canvas.DrawImage(turretAnim[_facing], posX, posY);
+                canvas.DrawImage(turretAnim[turretFacing], this.PosX, this.PosY);
             }
         }
 
@@ -117,92 +114,72 @@ namespace AlienShooter
         {
             switch (facing)
             {
-                case UP:
-                    posY -= speed;
+                case Up:
+                    this.PosY -= speed;
                     break;
-                case RIGHT:
-                    posX += speed;
+                case Right:
+                    this.PosX += speed;
                     break;
-                case DOWN:
-                    posY += speed;
+                case Down:
+                    this.PosY += speed;
                     break;
-                case UP_RIGHT:
-                    posX += speed;
-                    posY -= speed;
+                case UpRight:
+                    this.PosX += speed;
+                    this.PosY -= speed;
                     break;
-                case DOWN_RIGHT:
-                    posX += speed;
-                    posY += speed;
+                case DownRight:
+                    this.PosX += speed;
+                    this.PosY += speed;
                     break;
-                case DOWN_LEFT:
-                    posX -= speed;
-                    posY += speed;
+                case DownLeft:
+                    this.PosX -= speed;
+                    this.PosY += speed;
                     break;
-                case UP_LEFT:
-                    posX -= speed;
-                    posY -= speed;
+                case UpLeft:
+                    this.PosX -= speed;
+                    this.PosY -= speed;
                     break;
-                case LEFT:
-                    posX -= speed;
+                case Left:
+                    this.PosX -= speed;
                     break;
             }
 
-            if (posX > 640 - 64) posX = 640 - 64;
-            if (posY > 512 - 64) posY = 512 - 64;
-            if (posX < 0) posX = 0;
-            if (posY < 0) posY = 0;
+            if (this.PosX > 640 - 64) this.PosX = 640 - 64;
+            if (this.PosY > 512 - 64) this.PosY = 512 - 64;
+            if (this.PosX < 0) this.PosX = 0;
+            if (this.PosY < 0) this.PosY = 0;
 
-            canvas.DrawRectangle(new Pen(Color.Red), posX, posY, 64, 64);
-            canvas.DrawImage(animChain[count], posX, posY);
-            DrawTurret(canvas, turretFacing);
-            count++;
-            if (count > frameCount) count = 0;
+            canvas.DrawRectangle(new Pen(Color.Red), this.PosX, this.PosY, 64, 64);
+            canvas.DrawImage(this.animChain[this.count], this.PosX, this.PosY);
+            DrawTurret(canvas);
+            this.count++;
+            if (this.count > frameCount)
+            {
+                this.count = 0;
+            }
         }
 
         public void GetTurretFacing(MouseEventArgs e)
         {
-            double dX = e.X - (posX + centerOffset);
-            double dY = e.Y - (posY + centerOffset);
+            double dX = e.X - (this.PosX + CenterOffset);
+            double dY = e.Y - (this.PosY + CenterOffset);
+
+            var mouseAngle = Math.Asin(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180;
 
             if (dY < 0 && dX > 0)
-                mouseAngle = Math.Asin(dX/Math.Sqrt(dX*dX + dY*dY)) / Math.PI * 180;
+            {
+                this.MouseAngle = mouseAngle;
+            }
             else if (dY < 0 && dX < 0)
-                mouseAngle = Math.Asin(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180 + 360;
+            {
+                this.MouseAngle = mouseAngle + 360;
+            }
             else if (dY > 0)
-                mouseAngle = Math.Acos(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180 + 90;
+            {
+                this.MouseAngle = -mouseAngle + 180;
+            }
 
-            if (mouseAngle > 359 && mouseAngle < 1)
-                turretFacing = 0;
-            if (mouseAngle > 1 && mouseAngle < 44)
-                turretFacing = 1;
-            if (mouseAngle > 44 && mouseAngle < 46)
-                turretFacing = 2;
-            if (mouseAngle > 46 && mouseAngle < 89)
-                turretFacing = 3;
-            if (mouseAngle > 89 && mouseAngle < 91)
-                turretFacing = 4;
-            if (mouseAngle > 91 && mouseAngle < 134)
-                turretFacing = 5;
-            if (mouseAngle > 134 && mouseAngle < 136)
-                turretFacing = 6;
-            if (mouseAngle > 136 && mouseAngle < 179)
-                turretFacing = 7;
-            if (mouseAngle > 179 && mouseAngle < 181)
-                turretFacing = 8;
-            if (mouseAngle > 181 && mouseAngle < 224)
-                turretFacing = 17;
-            if (mouseAngle > 224 && mouseAngle < 226)
-                turretFacing = 16;
-            if (mouseAngle > 226 && mouseAngle < 269)
-                turretFacing = 15;
-            if (mouseAngle > 269 && mouseAngle < 271)
-                turretFacing = 14;
-            if (mouseAngle > 271 && mouseAngle < 314)
-                turretFacing = 13;
-            if (mouseAngle > 314 && mouseAngle < 316)
-                turretFacing = 12;
-            if (mouseAngle > 316 && mouseAngle < 359)
-                turretFacing = 11;
+            turretFacing = (int)(this.MouseAngle / 22.5);
         }
     }
 }
