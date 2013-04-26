@@ -6,11 +6,13 @@ namespace AlienShooter
     {
         int width;
         int height;
+        private Bitmap grassBmp;
 
         public Level(int _width, int _height)
         {
             width = _width;
             height = _height;
+            grassBmp = Resource1.grass;
         }
 
         public void Draw(Graphics canvas)
@@ -19,7 +21,7 @@ namespace AlienShooter
             {
                 for (int j = 0; j < height; j += 128)
                 {
-                    canvas.DrawImage(Resource1.grass, i, j);
+                    canvas.DrawImage(grassBmp, i, j);
                 }
             }
         }
