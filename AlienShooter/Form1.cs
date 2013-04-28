@@ -33,8 +33,7 @@ namespace AlienShooter
         {
 
             Graphics canvas = e.Graphics;
-            lv1.Draw(canvas);
-            
+
             foreach (Unit unit in enemies)
             {
                 //unit.GetFacing(plr1);

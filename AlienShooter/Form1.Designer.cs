@@ -52,6 +52,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::AlienShooter.Resource1.grass;
             this.ClientSize = new System.Drawing.Size(624, 478);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
