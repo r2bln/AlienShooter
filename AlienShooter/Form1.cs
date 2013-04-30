@@ -34,24 +34,23 @@ namespace AlienShooter
 
             Graphics canvas = e.Graphics;
 
-            foreach (Unit unit in enemies)
+            for (int index = 0; index < enemies.Count; index++)
             {
+                Unit unit = enemies[index];
                 //unit.GetFacing(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
                 unit.Draw(canvas);
 
                 collisionDetector(plr1, unit);
-                
+
                 if (unit.dead && unit.count == unit.deathChain.Count - 1)
                 {
                     enemies.Remove(unit);
-                    // Это костыль.
-                    break;                    
-                }      
+                }
             }
-            plr1.Draw(canvas);
             
+            plr1.Draw(canvas);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -109,9 +108,12 @@ namespace AlienShooter
 
             if (Math.Pow(x - unit.posX - unitCenterOffset, 2) + Math.Pow(y - unit.posY - unitCenterOffset, 2) < innerRadius * innerRadius)
             {
-                unit.dead = true;
-                unit.count = 0;
-            }
+                if (!unit.dead)
+                {
+                    unit.dead = true;
+                    unit.count = 0;
+                }
+            } 
         }
 
         

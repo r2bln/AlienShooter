@@ -147,7 +147,6 @@ namespace AlienShooter
             if (!dead)
             {
                 canvas.DrawImage(animChain[count], posX, posY);
-                
                 count++;
                 if (count > frameCount) count = 0;
             }
