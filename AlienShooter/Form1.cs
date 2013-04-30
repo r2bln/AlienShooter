@@ -37,7 +37,7 @@ namespace AlienShooter
             for (int index = 0; index < enemies.Count; index++)
             {
                 Unit unit = enemies[index];
-                //unit.GetFacing(plr1);
+                //unit.GetFacingAng(plr1);
                 unit.mouseX = mouseX;
                 unit.mouseY = mouseY;
                 unit.Draw(canvas);

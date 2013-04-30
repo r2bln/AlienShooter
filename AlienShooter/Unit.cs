@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 
 namespace AlienShooter
@@ -12,6 +13,8 @@ namespace AlienShooter
         public int speed = 3;
         public int mouseX;
         public int mouseY;
+        private int CenterOffset = 32;
+        private double playerAngle = 0;
 
         public int count;
         public bool dead = false;
@@ -97,6 +100,29 @@ namespace AlienShooter
             {
                 animChain = frameSource.GetAnim(facing);
             }
+        }
+
+        public void GetFacingAng(Player plr1)
+        {
+            double dX = plr1.PosX - (posX + CenterOffset);
+            double dY = plr1.PosY - (posY + CenterOffset);
+
+            var tmpAngle = Math.Asin(dX / Math.Sqrt(dX * dX + dY * dY)) / Math.PI * 180;
+
+            if (dY < 0 && dX > 0)
+            {
+                playerAngle = tmpAngle;
+            }
+            else if (dY < 0 && dX < 0)
+            {
+                playerAngle = tmpAngle + 360;
+            }
+            else if (dY > 0)
+            {
+                playerAngle = -tmpAngle + 180;
+            }
+
+            facing = (int)(playerAngle / 22.5);
         }
 
         /// <summary>
